@@ -14,7 +14,7 @@ export const users = pgTable("users", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
   username: text("username").notNull().unique(),
   email: text("email").notNull().unique(),
-  playerId: integer("player_id").notNull().unique(),
+  playerId: integer("player_id"),
   password: text("password").notNull(),
   wanted: jsonb("wanted"), // Lista de IDs de cartas que está buscando
   available: jsonb("available"), // Lista de IDs de cartas que está ofreciendo

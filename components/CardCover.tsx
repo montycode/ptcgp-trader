@@ -2,8 +2,8 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-//import { IKImage } from "imagekitio-next";
+import config from "@/lib/config";
+import { IKImage } from "imagekitio-next";
 
 type CardCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
 
@@ -37,12 +37,14 @@ const CardCover = ({
       )}
     >
       <div className="absolute z-10" style={{ width: "100%", height: "100%" }}>
-        <Image
-          src={coverImage}
+        <IKImage
+          path={coverImage}
+          urlEndpoint={config.env.imagekit.urlEndpoint}
           alt={alt}
           fill
           className="rounded-sm object-fill"
           loading="lazy"
+          lqip={{ active: true }}
         />
       </div>
     </div>

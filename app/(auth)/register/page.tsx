@@ -12,7 +12,7 @@ const Page = () => (
       email: "",
       password: "",
       username: "",
-      playerId: 0,
+      playerId: null,
     }}
     onSubmit={signUp}
   />

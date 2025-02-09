@@ -30,7 +30,7 @@ const authenticator = async () => {
     const { signature, expire, token } = data;
 
     return { token, expire, signature };
-  } catch (error) {
+  } catch (error: unknown) {
     if (error instanceof Error) {
       throw new Error(`Authentication request failed: ${error.message}`);
     } else {
@@ -73,7 +73,11 @@ const FileUpload = ({
     text: variant === "dark" ? "text-light-100" : "text-dark-400",
   };
 
-  const onError = (error: Error) => {
+  interface UploadError {
+    message: string;
+  }
+
+  const onError = (error: UploadError) => {
     console.log(error);
 
     toast({
@@ -151,7 +155,7 @@ const FileUpload = ({
           e.preventDefault();
 
           if (ikUploadRef.current) {
-            // @ts-expect-error: TypeScript does not recognize the click method on the ref
+            // @ts-expect-error - Ref is not null
             ikUploadRef.current?.click();
           }
         }}
@@ -179,19 +183,19 @@ const FileUpload = ({
         </div>
       )}
 
-      {file && file.filePath && (
+      {file && (
         <>
           {type === "image" && (
             <IKImage
-              alt={file.filePath}
-              path={file.filePath}
+              alt={file.filePath ?? "image"}
+              path={file.filePath ?? ""}
               width={500}
               height={300}
             />
           )}
           {type === "video" && (
             <IKVideo
-              path={file.filePath}
+              path={file.filePath ?? ""}
               controls={true}
               className="h-96 w-full rounded-xl"
             />

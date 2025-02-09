@@ -32,7 +32,7 @@ export interface AuthCredentials {
   username: string;
   email: string;
   password: string;
-  playerId: number;
+  playerId: number | null;
 }
 
 // Tipo para los costos de energía
@@ -84,7 +84,7 @@ export type Pack = {
   id: string; // ID del pack exclusivo, como "A1-Mewtwo"
   name: string; // Nombre del pack
   image: string; // Imagen del pack
-  exclusiveCardIds: string[]; // IDs de cartas exclusivas en este pack
+  setId: string; // ID del set al que pertenece el pack
 };
 
 // Tipo para los sets
