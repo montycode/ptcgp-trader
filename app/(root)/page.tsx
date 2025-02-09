@@ -1,14 +1,19 @@
 import CardList from "@/components/CardList";
 import CardOverview from "@/components/CardOverview";
-import { sampleCards } from "@/constants";
+import { db } from "@/database/drizzle";
+import { cards } from "@/database/schema";
 
-const Home = () => {
+const Home = async () => {
+  const result = await db.select().from(cards);
+
+  if (result.length <= 0) return <div>Loading...</div>;
+
   return (
     <div>
-      <CardOverview {...sampleCards[3]} />
+      <CardOverview {...result[0]} />
       <CardList
         title="Cartas Populares"
-        cards={sampleCards}
+        cards={result}
         containerClassName="mt-28"
       />
     </div>

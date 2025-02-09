@@ -8,7 +8,7 @@ const CardComponent = ({ id, image, name }: Card) => (
     <CardCover coverImage={image} alt={name} />
     <div className={cn("mt-4", "xs:max-w-40 max-w-28")}>
       <p className="card-title p-1">{name}</p>
-      <p className="card-id p-1">{id}</p>
+      <p className="card-id p-1">{id.replace("-", " ")}</p>
     </div>
   </li>
 );

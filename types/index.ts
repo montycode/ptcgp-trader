@@ -1,3 +1,40 @@
+// RARITY_ENUM
+export type RARITY_ENUM =
+  | "◇"
+  | "◇◇"
+  | "◇◇◇"
+  | "◇◇◇◇"
+  | "☆"
+  | "☆☆"
+  | "☆☆☆"
+  | "♛";
+
+// STAGE_ENUM
+export type STAGE_ENUM = "Basic" | "Stage 1" | "Stage 2";
+
+// TYPE_ENUM
+export type TYPE_ENUM =
+  | "Grass"
+  | "Fire"
+  | "Water"
+  | "Lightning"
+  | "Fighting"
+  | "Psychic"
+  | "Colorless"
+  | "Darkness"
+  | "Metal"
+  | "Dragon"
+  | "Item"
+  | "Supporter"
+  | "Pokemon Tool";
+
+export interface AuthCredentials {
+  username: string;
+  email: string;
+  password: string;
+  playerId: number;
+}
+
 // Tipo para los costos de energía
 export type EnergyCost = {
   fire?: number;
@@ -26,39 +63,43 @@ export type Ability = {
 
 // Tipo para las cartas
 export type Card = {
-  id: string; // ID de la carta, como "A1-001"
-  name: string; // Nombre de la carta
-  setId: string; // ID del set al que pertenece
-  image: string; // URL de la imagen de la carta
-  rarity: string; // Rareza de la carta, por ejemplo "◇"
-  exclusivePack: string; // Pack exclusivo al que pertenece
-  type: string; // Tipo de carta, por ejemplo "Fire", "Water", "Grass"
-  hp: number; // Puntos de salud
-  stage: string; // Etapa de la carta, como "Basic", "Stage 2", "EX"
-  ability?: Ability; // Habilidad de la carta (opcional)
-  packPoints: number; // Puntos del pack
-  retreatCost: number; // Costo de retirada
-  attacks: Attack[]; // Lista de ataques de la carta
-  howToGet: string; // Cómo obtener la carta (por ejemplo, "Abre sobres A1-Charizard")
+  id: string; // varchar("id", { length: 50 })
+  name: string; // text("name")
+  setId: string; // varchar("set_id", { length: 50 })
+  image: string; // text("image")
+  rarity: RARITY_ENUM; // RARITY_ENUM("rarity")
+  type: TYPE_ENUM; // TYPE_ENUM("type")
+  hp: number | null; // integer("hp")
+  stage?: STAGE_ENUM | null; // STAGE_ENUM("stage")
+  packPoints: number; // integer("pack_points")
+  retreatCost?: number | null; // integer("retreat_cost")
+  attacks: unknown; // jsonb("attacks")
+  ability: unknown; // jsonb("ability")
+  effect?: string | null; // text("effect")
+  howToGet: string; // text("how_to_get")
 };
 
-// Tipo para los sets
+// Tipo para los packs
 export type Pack = {
   id: string; // ID del pack exclusivo, como "A1-Mewtwo"
   name: string; // Nombre del pack
   image: string; // Imagen del pack
-  exclusiveCards: string[]; // IDs de cartas exclusivas en este pack
+  exclusiveCardIds: string[]; // IDs de cartas exclusivas en este pack
 };
 
+// Tipo para los sets
 export type Set = {
   id: string; // ID del set, como "A1"
   name: string; // Nombre del set, por ejemplo "Genetic Apex"
   image: string; // Imagen del set
-  packs: Pack[]; // Lista de sobres en el set
+  packIds: string[]; // Lista de IDs de packs en el set
 };
 
 // Tipo para los jugadores (colección de jugadores)
 export type Player = {
+  email: string; // Correo electrónico del jugador
+  username: string; // Nombre de usuario del jugador
+  password: string; // Contraseña del jugador
   playerId: string; // ID único del jugador
   wanted: string[]; // Lista de IDs de cartas que está buscando
   available: string[]; // Lista de IDs de cartas que está ofreciendo

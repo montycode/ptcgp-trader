@@ -1,6 +1,18 @@
-import { Card, Set } from "@/types";
+export const FIELD_NAMES = {
+  username: "Nombre de Usuario",
+  email: "Correo Electrónico",
+  userId: "ID de amigo",
+  password: "Contraseña",
+};
 
-export const sampleCards: Card[] = [
+export const FIELD_TYPES = {
+  username: "text",
+  email: "email",
+  userId: "number",
+  password: "password",
+};
+
+export const sampleCards: unknown[] = [
   {
     id: "A1-001",
     name: "Bulbasaur",
@@ -116,13 +128,13 @@ export const sampleCards: Card[] = [
   },
 ];
 
-export const sampleSets: Set[] = [
+export const sampleSets: unknown[] = [
   {
     id: "A1",
     name: "Genetic Apex",
     image:
       "https://img.game8.co/4031089/8f0ceab874dd7a3488a211ee69a9b759.png/show",
-    packs: [
+    packIds: [
       {
         id: "A1-Mewtwo",
         name: "Genetic Apex (A1) Mewtwo",

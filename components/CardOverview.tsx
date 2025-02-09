@@ -1,93 +1,124 @@
-import { Card } from "@/types";
-import { FC } from "react";
-import Image from "next/image";
+"use client";
+import { Card, Ability, Attack } from "@/types";
+import { FC, useEffect, useState } from "react";
+import CardCover from "./CardCover";
 
 const CardOverview: FC<Card> = ({
   id,
   name,
   image,
   rarity,
-  exclusivePack,
   type,
   hp,
   stage,
   packPoints,
   retreatCost,
-  attacks,
+  attacks = [],
   howToGet,
   ability,
 }) => {
+  const [typedAttacks, setTypedAttacks] = useState<Attack[]>([]);
+
+  // Asegurarse de que typedAttacks es un array
+  useEffect(() => {
+    if (Array.isArray(attacks)) {
+      setTypedAttacks(attacks); // Si es un array, actualizamos el estado
+    } else {
+      setTypedAttacks([]); // Si no es un array, dejamos el array vacío
+    }
+  }, [attacks]); // Dependencia en `attacks`, se ejecuta cuando cambia
+
+  const typedAbility = ability as Ability | undefined;
+
   return (
     <section className="card-overview">
       <div className="flex flex-1 flex-col gap-5">
-        <h1 className="font-bebas-neue text-4xl text-light-100">
-          {name} ({id})
+        <h3 className="font-bebas-neue text-3xl text-light-100">
+          Carta del Día
+        </h3>
+        <h1 className="font-bebas-neue text-3xl text-light-100">
+          {name} ({id.replace("-", " ")})
         </h1>
-        <Image
-          src={image}
-          alt={name}
-          width={250} // Puedes ajustar el tamaño a tu preferencia
-          height={350} // También ajusta la altura según necesites
-          layout="intrinsic" // Hace que la imagen mantenga sus proporciones
-        />
-        <div>
-          <strong>Type:</strong> {type}
-        </div>
-        <div>
-          <strong>Rarity:</strong> {rarity}
-        </div>
-        <div>
-          <strong>HP:</strong> {hp}
-        </div>
-        <div>
-          <strong>Stage:</strong> {stage}
-        </div>
-        <div>
-          <strong>Pack Points:</strong> {packPoints}
-        </div>
-        <div>
-          <strong>Retreat Cost:</strong> {retreatCost}
-        </div>
-        <div>
-          <strong>How to Get:</strong> {howToGet}
-        </div>
-        {exclusivePack && (
+        <div className="card-info">
+          <p>
+            Type <span className="font-semibold text-light-200">{type}</span>
+          </p>
+          <p>
+            Rarity{" "}
+            <span className="font-semibold text-light-200">{rarity}</span>
+          </p>
           <div>
-            <strong>Exclusive Pack:</strong> {exclusivePack}
+            <strong>Retreat Cost:</strong> {retreatCost}
           </div>
-        )}
-        {ability && (
-          <div>
-            <strong>Ability:</strong>
+        </div>
+        <div className="card-copies">
+          <p>
+            HP <span>{hp}</span>
+          </p>
+          <p>
+            Stage <span>{stage}</span>
+          </p>
+          <p>
+            Pack Points: <span>{packPoints}</span>
+          </p>
+
+          {typedAbility && (
             <p>
-              {ability.name}: {ability.description}
+              Ability: <span>{typedAbility.name}:</span>{" "}
+              {typedAbility.description}
             </p>
-          </div>
-        )}
-        <div>
+          )}
+          <p>
+            How to Get: <span>{howToGet}</span>
+          </p>
+        </div>
+        <div className="card-attacks font-bebas-neue text-3xl text-light-100">
           <strong>Attacks:</strong>
           <ul>
-            {attacks.map((attack) => (
-              <li key={attack.name}>
-                <strong>{attack.name}</strong> - {attack.damage} damage
-                <div>
-                  <strong>Energy Cost:</strong>
-                  {Object.entries(attack.energyCost).map(
-                    ([energyType, cost]) => (
-                      <span key={energyType}>
-                        {energyType}: {cost}{" "}
-                      </span>
-                    )
-                  )}
-                </div>
-                {attack.effect && (
+            {typedAttacks.length > 0 ? (
+              typedAttacks.map((attack) => (
+                <li key={attack.name}>
+                  <strong>{attack.name}</strong> - {attack.damage} damage
                   <div>
-                    <strong>Effect:</strong> {attack.effect}
+                    <strong>Energy Cost:</strong>
+                    {Object.entries(attack.energyCost).map(
+                      ([energyType, cost]) => (
+                        <span key={energyType}>
+                          {energyType}: {cost}{" "}
+                        </span>
+                      )
+                    )}
                   </div>
-                )}
-              </li>
-            ))}
+                  {attack.effect && (
+                    <div>
+                      <strong>Effect:</strong> {attack.effect}
+                    </div>
+                  )}
+                </li>
+              ))
+            ) : (
+              <p>No attacks available</p>
+            )}
           </ul>
+        </div>
+      </div>
+      <div className="relative flex flex-1 justify-center">
+        <div className="relative">
+          <CardCover
+            variant="wide"
+            className="z-10"
+            coverImage={image}
+            alt={name}
+          />
+
+          <div className="absolute left-16 top-10 rotate-12 opacity-40 max-sm:hidden">
+            <CardCover
+              variant="wide"
+              className="z-10"
+              coverImage={image}
+              alt={name}
+            />
+          </div>
         </div>
       </div>
     </section>
