@@ -26,15 +26,16 @@ export const users = pgTable("users", {
 
 // Enums
 export const RARITY_ENUM = pgEnum("rarity", [
-  "◇",
-  "◇◇",
-  "◇◇◇",
-  "◇◇◇◇",
-  "☆",
-  "☆☆",
-  "☆☆☆",
-  "♛",
+  "Common",
+  "Uncommon",
+  "Rare",
+  "Double Rare",
+  "Art Rare",
+  "Super Rare",
+  "Immersive Rare",
+  "Ultra Rare",
 ]);
+
 export const STAGE_ENUM = pgEnum("stage", ["Basic", "Stage 1", "Stage 2"]);
 export const TYPE_ENUM = pgEnum("type", [
   "Grass",
@@ -66,20 +67,6 @@ export const cards = pgTable("cards", {
   stage: STAGE_ENUM("stage"),
   packPoints: integer("pack_points").notNull(),
   retreatCost: integer("retreat_cost"),
-  attacks: jsonb("attacks"),
-  ability: jsonb("ability"),
-  effect: text("effect"),
-  howToGet: text("how_to_get").notNull(),
-});
-
-// Packs Table
-export const packs = pgTable("packs", {
-  id: varchar("id", { length: 50 }).notNull().primaryKey(),
-  name: text("name").notNull(),
-  image: text("image").notNull(),
-  setId: varchar("set_id", { length: 50 })
-    .notNull()
-    .references(() => sets.id),
 });
 
 // Sets Table
@@ -87,14 +74,8 @@ export const sets = pgTable("sets", {
   id: varchar("id", { length: 50 }).notNull().primaryKey(),
   name: text("name").notNull(),
   image: text("image").notNull(),
-});
-
-// Relationship table for exclusive cards in packs
-export const packExclusiveCards = pgTable("pack_exclusive_cards", {
-  packId: varchar("pack_id", { length: 50 })
-    .notNull()
-    .references(() => packs.id, { onDelete: "cascade" }),
-  cardId: varchar("card_id", { length: 50 })
-    .notNull()
-    .references(() => cards.id, { onDelete: "cascade" }),
+  displayId: text("display_id").notNull(),
+  cardsCount: text("cards_count"),
+  releaseDate: date("release_date").notNull(),
+  canBeTraded: text("can_be_traded").notNull(),
 });

@@ -1,7 +1,7 @@
-import { sampleSets, samplePacks, sampleCards } from "@/constants";
+import { sampleSets, sampleCards } from "@/constants";
 import ImageKit from "imagekit";
-import { Set, Pack, Card } from "@/types";
-import { cards, packs, sets } from "@/database/schema";
+import { Set, Card } from "@/types";
+import { cards, sets } from "@/database/schema";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { config } from "dotenv";
@@ -49,20 +49,6 @@ const seed = async () => {
 
       await db.insert(sets).values({
         ...set,
-        image: coverUrl,
-      });
-    }
-
-    // Seed packs
-    for (const pack of samplePacks as Pack[]) {
-      const coverUrl = (await uploadToImageKit(
-        pack.image,
-        `${pack.name}.jpg`,
-        "/packs/covers"
-      )) as string;
-
-      await db.insert(packs).values({
-        ...pack,
         image: coverUrl,
       });
     }

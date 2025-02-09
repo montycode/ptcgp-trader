@@ -1,13 +1,13 @@
 // RARITY_ENUM
 export type RARITY_ENUM =
-  | "◇"
-  | "◇◇"
-  | "◇◇◇"
-  | "◇◇◇◇"
-  | "☆"
-  | "☆☆"
-  | "☆☆☆"
-  | "♛";
+  | "Common"
+  | "Uncommon"
+  | "Rare"
+  | "Double Rare"
+  | "Art Rare"
+  | "Super Rare"
+  | "Immersive Rare"
+  | "Ultra Rare";
 
 // STAGE_ENUM
 export type STAGE_ENUM = "Basic" | "Stage 1" | "Stage 2";
@@ -73,10 +73,6 @@ export type Card = {
   stage?: STAGE_ENUM | null; // STAGE_ENUM("stage")
   packPoints: number; // integer("pack_points")
   retreatCost?: number | null; // integer("retreat_cost")
-  attacks: unknown; // jsonb("attacks")
-  ability: unknown; // jsonb("ability")
-  effect?: string | null; // text("effect")
-  howToGet: string; // text("how_to_get")
 };
 
 // Tipo para los packs
@@ -91,8 +87,11 @@ export type Pack = {
 export type Set = {
   id: string; // ID del set, como "A1"
   name: string; // Nombre del set, por ejemplo "Genetic Apex"
+  displayId: string; // ID de visualización, como "A1"
+  cardsCount?: string | null; // Número de cartas en el set
   image: string; // Imagen del set
-  packIds: string[]; // Lista de IDs de packs en el set
+  releaseDate: string; // Fecha de lanzamiento del set
+  canBeTraded: string; // Si las cartas de este set pueden ser intercambiadas
 };
 
 // Tipo para los jugadores (colección de jugadores)
